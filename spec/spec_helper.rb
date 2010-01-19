@@ -1,6 +1,29 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require 'rubygems'
+
+RAILS_ENV = "test"
+RAILS_VERSION = ENV['RAILS_VERSION'] || '2.3.5'
+
+gem 'activesupport', RAILS_VERSION
+require 'active_support'
+
+gem 'activerecord', RAILS_VERSION
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(
+  :adapter => 'sqlite3',
+  :database => ':memory:'
+)
+
+dir = File.dirname(__FILE__)
+
+RAILS_ROOT = File.expand_path(dir)
+
+require File.expand_path(dir + "/../lib/active_ad.rb")
 
 require 'fake_web'
+
+class User
+end
 
 def json_from(file)
   File.open("#{DOCS_PATH}/#{file}.json").read

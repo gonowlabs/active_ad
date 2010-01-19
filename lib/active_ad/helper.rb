@@ -60,7 +60,7 @@ module ActiveAd
     end
 
     def self.value_for(value)
-      if value.instance_of?(File) or value.instance_of?(Tempfile)
+      if value.instance_of?(File) or value.instance_of?(::Tempfile)
         value
       else
         URI.escape value.to_s

@@ -14,7 +14,7 @@ describe ActiveAd::Advertise do
   end
 
   it "should be a new record" do
-    Advertise.new(:title => "Vendo carro").new_record?.should be_true
+    ActiveAd::Advertise.new(:title => "Vendo carro").new_record?.should be_true
   end
 
   it "should return id as nil when new" do
@@ -34,7 +34,7 @@ describe ActiveAd::Advertise do
   end
 
   it "should respond to new_record?" do
-    Advertise.new(:title => "Vendo carro").new_record?.should be_true
+    ActiveAd::Advertise.new(:title => "Vendo carro").new_record?.should be_true
   end
 
   context "on save" do
