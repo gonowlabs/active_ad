@@ -1,0 +1,6 @@
+development:
+
+test:
+  host: http://localhost:3000/business_owners/h35ju34nh54j3
+
+production:
