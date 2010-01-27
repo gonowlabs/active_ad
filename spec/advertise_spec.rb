@@ -85,6 +85,17 @@ describe ActiveAd::Advertise do
     end
   end
 
+  context "on find by attribute" do
+    it "should find a advertise by owner id" do
+      pending
+      attribute, value = "owner_id", "1"
+      advertise = mock_for(advertise_json)
+      HTTPClient.should_receive(:get).with(json_path_for("find_by_attribute/#{attribute}/#{value}")).
+        and_return(advertise)
+      ActiveAd::Advertise.find_by_attribute(attribute, value)
+    end
+  end
+
   context "on find" do
     it "should get an advertise by an id" do
       id = "14"
@@ -264,6 +275,11 @@ describe ActiveAd::Advertise do
     ActiveAd::Advertise.new(:price => price).price.should eql(price)
   end
 
+  it "should return the hits" do
+    hits = 3
+    ActiveAd::Advertise.new(:hits => hits).hits.should eql(hits)
+  end
+
   it "should return the title" do
     title = "Best advertise"
     ActiveAd::Advertise.new(:title => title).title.should eql(title)
@@ -277,3 +293,4 @@ describe ActiveAd::Advertise do
     ActiveAd::Advertise.find_by_owner_id(OWNER_ID).page.should == 13
   end
 end
+

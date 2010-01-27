@@ -80,9 +80,22 @@ module ActiveAd
       @attributes['title']
     end
 
+    def hits
+      @attributes['hits']
+    end
+
     def self.find(id)
       response = Helper.get "advertises/#{id}"
       new response['advertise']
+    end
+
+    def self.find_by_attribute(attribute, value)
+      advertises = []
+      response = Helper.get "find_by_attribute/#{attribute}/#{value}"
+      response.each do |advertise|
+        advertises << (new advertise['advertise'])
+      end
+      advertises
     end
 
     def self.find_by_owner_id(id)
@@ -115,3 +128,4 @@ module ActiveAd
     end
   end
 end
+
