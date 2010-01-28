@@ -294,5 +294,31 @@ describe ActiveAd::Advertise do
   it "should find advertises for an user by an id" do
     ActiveAd::Advertise.find_by_owner_id(OWNER_ID).page.should == 13
   end
-end
 
+  context "method not exist" do
+    before :each do
+      @url = "http://test.com"
+      @advertise = ActiveAd::Advertise.new
+      @advertise.url = @url
+    end
+    it "should create a dynamic attribute when has a symbol =" do
+      @advertise.dynamic_attributes.last.name.should == "url"
+      @advertise.dynamic_attributes.last.value.should == @url
+    end
+    it "should have get value from dynamic attributes" do
+      @advertise.url.should == @url
+    end
+    context "when alread have dynamic attributes" do
+      it "should add a new dynamic attribute" do
+        @advertise.weight = "30"
+        @advertise.url.should == @url
+        @advertise.weight.should == "30"
+      end
+    end
+    context "when attribute doesnt exist" do
+      it "should return nil" do
+        @advertise.weight.should be_nil
+      end
+    end
+  end
+end
