@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe ActiveAd::Advertise do
+
   before :each do
     fakeweb
   end
@@ -72,6 +73,7 @@ describe ActiveAd::Advertise do
       file = open_file
       HTTPClient.should_receive(:post) do |path, options|
         options['advertise[files][test]'].should eql(file)
+        mock_for(advertise_json)
       end
       ActiveAd::Advertise.new(:files => { :test => file }).save
     end
@@ -80,20 +82,20 @@ describe ActiveAd::Advertise do
       file = open_tempfile
       HTTPClient.should_receive(:post) do |path, options|
         options['advertise[files][test]'].should eql(file)
+        mock_for(advertise_json)
       end
       ActiveAd::Advertise.new(:files => { :test => file }).save
     end
   end
 
   context "on find by attribute" do
-    it "should find a advertise by owner id" do
-      pending
+    it "should find advertises by owner id" do
       attribute, value = "owner_id", "1"
-      advertise = mock_for(advertise_json)
-      HTTPClient.should_receive(:get).with(json_path_for("find_by_attribute/#{attribute}/#{value}")).
-        and_return(advertise)
-      ActiveAd::Advertise.find_by_attribute(attribute, value)
+      HTTPClient.stub!(:get).with(json_path_for("find_by_attribute/#{attribute}/#{value}")).and_return(mock_for(latests_json))
+      advertises = ActiveAd::Advertise.find_by_attribute(attribute, value)
+      advertises.first.should be_instance_of(ActiveAd::Advertise)
     end
+
   end
 
   context "on find" do
