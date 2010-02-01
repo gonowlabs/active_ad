@@ -2,6 +2,16 @@ module ActiveAd
   class Advertise
     attr_accessor :attributes
 
+    def self.attr_acc(*attributes)
+      code = ""
+      attributes.each do |attribute|
+        code << "def #{attribute}; @attributes[\"#{attribute}\"]; end;"
+      end
+      self.class_eval code
+    end
+
+    attr_acc :price, :description, :hits, :title
+
     def initialize(params = {})
       @attributes = params.stringify_keys
     end
@@ -68,22 +78,6 @@ module ActiveAd
       User.find(owner_id) unless owner_id.nil?
     end
 
-    def description
-      @attributes['description']
-    end
-
-    def price
-      @attributes['price']
-    end
-
-    def title
-      @attributes['title']
-    end
-
-    def hits
-      @attributes['hits']
-    end
-
     def self.find(id)
       response = Helper.get "advertises/#{id}"
       new response['advertise']
@@ -142,3 +136,4 @@ module ActiveAd
       end
   end
 end
+
