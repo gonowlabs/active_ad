@@ -122,18 +122,9 @@ module ActiveAd
     end
 
     def method_missing(method, *arguments, &block)
-      if writer_method? method
-        @attributes['dynamic_attributes'] = [{}] unless @attributes['dynamic_attributes']
-        @attributes['dynamic_attributes'] << {:name => method.to_s.delete(":="), :value => arguments[0]}
-      else
         dynamic_attribute = dynamic_attributes.select { |dynamic_attribute| dynamic_attribute.name == method.to_s}
         dynamic_attribute.first.value if dynamic_attribute.first
-      end
     end
-    private
-      def writer_method?(method)
-        method.to_s.end_with? "="
-      end
   end
 end
 
